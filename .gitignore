@@ -213,3 +213,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+/ZombieHunters/src/Jplay/nbproject/private/
+/ZombieHunters/Jplay/nbproject/private/
