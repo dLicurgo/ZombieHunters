@@ -5,6 +5,7 @@
  */
 package principal;
 
+import javax.swing.JOptionPane;
 import jplay.Animation;
 import jplay.GameImage;
 import jplay.Keyboard;
@@ -20,7 +21,7 @@ import jplay.Window;
  */
 class Game {
 
-    public Game(Window pai) {
+    public Game() {
 
         Window janela = new Window(800, 600);
 
@@ -37,14 +38,14 @@ class Game {
         explosao.setLoop(false);
         boolean acertou = false;
 
-        Sound intro = new Sound("intro.wav");
-        intro.setRepeat(true);
-        intro.play();
-
         Mouse mouse = janela.getMouse();
         Keyboard tec = janela.getKeyboard();
 
-        Time tempoTotal = new Time(0, 1, 0, 0, 0, false);
+        Sound intro = new Sound("suspense3.wav");
+        intro.setRepeat(true);
+        intro.play();
+
+        Time tempoTotal = new Time(0, 0, 10, 0, 0, false);
         Time tempoAtual = new Time(0, 0, 1, 0, 0, false);
 
         int pt = 0;
@@ -79,14 +80,23 @@ class Game {
             if (tempoAtual.timeEnded() || acertou) {
                 zumbi.x = sorteiaX(zumbi.width);
                 zumbi.y = sorteiaY(zumbi.height);
-                
+
                 tempoAtual.setSecond(1);
+            }
+
+            if (tempoTotal.timeEnded()) {
+
+                String apelido = JOptionPane.showInputDialog("Digite seu apelido sem espaço: ");
+                new Ranking(apelido, pt, "lista.txt");
+                JOptionPane.showMessageDialog(null, "Sua pontuação: " + String.valueOf(pt));
             }
             janela.update();
 
         }
+        intro.stop();
+        janela.delay(500);
         janela.setVisible(false);
-        pai.setVisible(true);
+        new MenuPrincipal();
 
     }
 

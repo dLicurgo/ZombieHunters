@@ -40,7 +40,6 @@ public class Ranking {
                 while (arq.hasNext()) {
                     String nomeAtual = arq.next();
                     int pontoAtual = arq.nextInt();
-                    System.out.println(pontoAtual);
 
                     if (pontoAtual < pontos && !inserido) {
                         if (!arq.hasNext()) {
