@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package zombiehunters;
+package principal;
 
 import java.awt.Color;
 import java.io.File;
@@ -16,9 +16,9 @@ import jplay.Window;
  *
  * @author Dalton
  */
-class Ranking {
+class MenuRanking {
 
-    public Ranking(Window pai) {
+    public MenuRanking(Window pai) {
 
         Window janela = new Window(800, 600);
         GameImage fundo = new GameImage("menu.jpg");

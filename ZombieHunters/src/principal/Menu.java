@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package zombiehunters;
+package principal;
 
 import jplay.GameImage;
 import jplay.Mouse;
@@ -44,7 +44,7 @@ class Menu {
                     new Game(janela);
 
                 } else if (mouse.isOverObject(ranking)) {
-                    new Ranking(janela);
+                    new MenuRanking(janela);
 
                 } else if (mouse.isOverObject(quit)) {
                     end = true;
