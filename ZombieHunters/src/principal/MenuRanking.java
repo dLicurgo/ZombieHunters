@@ -64,6 +64,7 @@ class MenuRanking {
         
         Sound intro = new Sound("suspense5.wav");
         intro.setRepeat(true);
+        intro.setVolume(1);
         intro.play();
                 
         while (true){

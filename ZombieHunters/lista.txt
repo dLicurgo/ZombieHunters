@@ -4,6 +4,10 @@ d
 8
 Dalton
 6
+asda
+5
+dalton
+4
 Joao
 1
 maria
@@ -13,4 +17,5 @@ jose
 fulano
 4
 ciclano
-5
+5dsads
+1

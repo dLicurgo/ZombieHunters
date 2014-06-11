@@ -28,6 +28,7 @@ class MenuPrincipal {
 
         Sound intro = new Sound("intro.wav");
         intro.setRepeat(true);
+        intro.setVolume(1);
         intro.play();
 
         Menu mp = new Menu(800, 600, "menu.jpg");

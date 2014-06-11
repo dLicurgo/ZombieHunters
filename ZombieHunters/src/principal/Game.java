@@ -43,14 +43,15 @@ class Game {
 
         Sound intro = new Sound("suspense3.wav");
         intro.setRepeat(true);
+        intro.setVolume(1);
         intro.play();
 
         Time tempoTotal = new Time(0, 0, 10, 0, 0, false);
         Time tempoAtual = new Time(0, 0, 1, 0, 0, false);
 
         int pt = 0;
-
-        while (!tec.keyDown(Keyboard.ESCAPE_KEY) && !tempoTotal.timeEnded()) {
+        boolean executa = true;
+        while (!tec.keyDown(Keyboard.ESCAPE_KEY) && executa) {
 
             fundo.draw();
             zumbi.draw();
@@ -85,10 +86,11 @@ class Game {
             }
 
             if (tempoTotal.timeEnded()) {
-
-                String apelido = JOptionPane.showInputDialog("Digite seu apelido sem espaço: ");
-                new Ranking(apelido, pt, "lista.txt");
-                JOptionPane.showMessageDialog(null, "Sua pontuação: " + String.valueOf(pt));
+                    String apelido = JOptionPane.showInputDialog("Digite seu apelido sem espaço: ");
+                    new Ranking(apelido, pt, "lista.txt");
+                    JOptionPane.showMessageDialog(null, "Sua pontuação: " + String.valueOf(pt));
+                    executa = false;
+                
             }
             janela.update();
 
