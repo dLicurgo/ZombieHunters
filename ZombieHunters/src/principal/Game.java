@@ -5,6 +5,9 @@
  */
 package principal;
 
+import java.io.File;
+import java.util.Formatter;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 import jplay.Animation;
 import jplay.GameImage;
@@ -46,7 +49,7 @@ class Game {
         intro.setVolume(1);
         intro.play();
 
-        Time tempoTotal = new Time(0, 0, 10, 0, 0, false);
+        Time tempoTotal = new Time(0, 0, 20, 0, 0, false);
         Time tempoAtual = new Time(0, 0, 1, 0, 0, false);
 
         int pt = 0;
@@ -86,11 +89,14 @@ class Game {
             }
 
             if (tempoTotal.timeEnded()) {
-                    String apelido = JOptionPane.showInputDialog("Digite seu apelido sem espaço: ");
-                    new Ranking(apelido, pt, "lista.txt");
-                    JOptionPane.showMessageDialog(null, "Sua pontuação: " + String.valueOf(pt));
-                    executa = false;
-                
+                String apelido = "";
+                do {
+                    apelido += JOptionPane.showInputDialog("Digite seu apelido com no máximo 12 caracteres: ");
+                } while (apelido.length() > 12);
+                JOptionPane.showMessageDialog(null, "Você fez " + String.valueOf(pt) + " pontos!");
+                atualizaRanking(apelido, pt);
+                executa = false;
+
             }
             janela.update();
 
@@ -128,6 +134,51 @@ class Game {
                 pos = 600 - heigth - 10;
         }
         return pos;
+    }
+
+    private void atualizaRanking(String apelido, int pt) {
+        try {
+            Scanner origem = new Scanner(new File("lista.txt"));
+            int total = Integer.parseInt(origem.nextLine());
+            if (total == 0) {
+                origem.close();
+                total++;
+                Formatter destino = new Formatter(new File("lista.txt"));
+                destino.format("%d\n%s\n%d", total, apelido, pt);
+                destino.close();
+            } else {
+                String[] nome = new String[total];
+                int[] pontos = new int[total];
+                for (int i = 0; i < total; i++) {
+                    nome[i] = origem.nextLine();
+                    pontos[i] = Integer.parseInt(origem.nextLine());
+                }
+                origem.close();
+                Formatter destino = new Formatter(new File("lista.txt"));
+                if (total < 5) {
+                    int totalAtual = total + 1;
+                    destino.format("%d\n", totalAtual);
+                } else {
+                    destino.format("%d\n", 5);
+                }
+                boolean inserido = false;
+                for (int i = 0; i < total; i++) {
+                    if (pontos[i] < pt && !inserido) {
+                        destino.format("%s\n%d\n", apelido, pt);
+                        inserido = true;
+                    }
+                    destino.format("%s\n", nome[i]);
+                    destino.format("%d\n", pontos[i]);
+
+                }
+                if(!inserido){
+                    destino.format("%s\n%d", apelido, pt);
+                }
+                destino.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Errado");
+        }
     }
 
 }

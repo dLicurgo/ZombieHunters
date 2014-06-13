@@ -8,11 +8,9 @@ package principal;
 import java.awt.Color;
 import java.io.File;
 import java.util.Scanner;
-import javax.swing.JFrame;
 import jplay.GameImage;
 import jplay.Keyboard;
 import jplay.Sound;
-import jplay.Window;
 
 /**
  *
@@ -20,95 +18,96 @@ import jplay.Window;
  */
 class MenuRanking {
 
+    private String[] nomes = {"", "", "", "", ""};
+    private String[] pontos = {"", "", "", "", ""};
+
+    private int total;
+
     public MenuRanking() {
 
-        String plr1 = "";
-        String plr2 = "";
-        String plr3 = "";
-        String plr4 = "";
-        String plr5 = "";
-        
-        String pt1 = "";        
-        String pt2 = "";        
-        String pt3 = "";        
-        String pt4 = "";        
-        String pt5 = "";
-
-        boolean ok = false;
-        
         try {
-            Scanner arq = new Scanner(new File("lista.txt"));
+            Scanner origem = new Scanner(new File("lista.txt"));
+            total = Integer.parseInt(origem.nextLine());
+            for (int i = 0; i < total; i++) {
 
-            plr1 = arq.next();
-            pt1 = arq.next();
-            plr2 = arq.next();
-            pt2 = arq.next();
-            plr3 = arq.next();
-            pt3 = arq.next();
-            plr4 = arq.next();
-            pt4 = arq.next();
-            plr5 = arq.next();
-            pt5 = arq.next();
+                nomes[i] = origem.nextLine();
+                System.out.println(i + ":" + nomes[i]);
+                
+                pontos[i] = (origem.nextLine());
+                System.out.println(i + ":" + pontos[i]);
 
-            ok = true;
-            arq.close();
-
+            }
+            origem.close();
         } catch (Exception e) {
+            System.out.println("Erro");
         }
-        
+
         Menu mr = new Menu(800, 600, "menu.jpg");
-        
+
         GameImage botaoExit = new GameImage("botao.png");
+        botaoExit.x = 50;
         botaoExit.y = 600 - botaoExit.height - 88.5;
-        
-        
+
         Sound intro = new Sound("suspense5.wav");
         intro.setRepeat(true);
         intro.setVolume(1);
         intro.play();
-                
-        while (true){
+
+        while (true) {
 
             mr.fundo.draw();
             botaoExit.draw();
 
-            if (ok) {
-                String linha = "----------------------------------------------";
-                
-                mr.janela.drawText(linha, 50, 50, Color.RED);
-                mr.janela.drawText("|JOGADOR", 50, 60, Color.RED);
-                mr.janela.drawText(linha, 50, 70, Color.RED);
-                mr.janela.drawText("|" + plr1, 50, 80, Color.RED);
-                mr.janela.drawText(linha, 50, 90, Color.RED);
-                mr.janela.drawText("|" + plr2, 50, 100, Color.RED);
-                mr.janela.drawText(linha, 50, 110, Color.RED);
-                mr.janela.drawText("|" + plr3, 50, 120, Color.RED);
-                mr.janela.drawText(linha, 50, 130, Color.RED);
-                mr.janela.drawText("|" + plr4, 50, 140, Color.RED);
-                mr.janela.drawText(linha, 50, 150, Color.RED);
-                mr.janela.drawText("|" + plr5, 50, 160, Color.RED);
-                mr.janela.drawText(linha, 50, 170, Color.RED);
-                
-                mr.janela.drawText("PONTUAÇÃO  |", 150, 60, Color.RED);
-                mr.janela.drawText("       " + pt1 + "                  |", 150, 80, Color.RED);
-                mr.janela.drawText("       " + pt2 + "                  |", 150, 100, Color.RED);
-                mr.janela.drawText("       " + pt3 + "                  |", 150, 120, Color.RED);
-                mr.janela.drawText("       " + pt4 + "                  |", 150, 140, Color.RED);
-                mr.janela.drawText("       " + pt5 + "                  |", 150, 160, Color.RED);
-            }
-            
-            if((mr.mouse.isLeftButtonPressed() && mr.mouse.isOverObject(botaoExit)) || mr.tec.keyDown(Keyboard.ESCAPE_KEY)){
-                
+            mostraRanking(mr, nomes, pontos);
+
+            if ((mr.mouse.isLeftButtonPressed() && mr.mouse.isOverObject(botaoExit)) || mr.tec.keyDown(Keyboard.ESCAPE_KEY)) {
+
                 intro.stop();
                 mr.janela.delay(500);
                 mr.janela.setVisible(false);
                 new MenuPrincipal();
-                
+
             }
-            
+
             mr.janela.update();
         }
 
     }
 
+    private void mostraRanking(Menu mr, String[] nomes, String[] pontos) {
+
+        String linhas = "---------------------------------------------------------------";
+
+        mr.janela.drawText(linhas, 50, 50, Color.yellow);
+        mr.janela.drawText("|Jogador", 50, 60, Color.yellow);
+        mr.janela.drawText("|Pontos", 175, 60, Color.yellow);
+        mr.janela.drawText("|", 300, 60, Color.yellow);
+        mr.janela.drawText(linhas, 50, 70, Color.yellow);
+
+        mr.janela.drawText("|" + nomes[0], 50, 80, Color.yellow);
+        mr.janela.drawText("|" + pontos[0], 175, 80, Color.yellow);
+        mr.janela.drawText("|", 300, 80, Color.yellow);
+        mr.janela.drawText(linhas, 50, 90, Color.yellow);
+
+        mr.janela.drawText("|" + nomes[1], 50, 100, Color.yellow);
+        mr.janela.drawText("|" + pontos[1], 175, 100, Color.yellow);
+        mr.janela.drawText("|", 300, 100, Color.yellow);
+        mr.janela.drawText(linhas, 50, 110, Color.yellow);
+
+        mr.janela.drawText("|" + nomes[2], 50, 120, Color.yellow);
+        mr.janela.drawText("|" + pontos[2], 175, 120, Color.yellow);
+        mr.janela.drawText("|", 300, 120, Color.yellow);
+        mr.janela.drawText(linhas, 50, 130, Color.yellow);
+
+        mr.janela.drawText("|" + nomes[3], 50, 140, Color.yellow);
+        mr.janela.drawText("|" + pontos[3], 175, 140, Color.yellow);
+        mr.janela.drawText("|", 300, 140, Color.yellow);
+        mr.janela.drawText(linhas, 50, 150, Color.yellow);
+
+        mr.janela.drawText("|" + nomes[4], 50, 160, Color.yellow);
+        mr.janela.drawText("|" + pontos[4], 175, 160, Color.yellow);
+        mr.janela.drawText("|", 300, 160, Color.yellow);
+        mr.janela.drawText(linhas, 50, 170, Color.yellow);
+
+    }
 }

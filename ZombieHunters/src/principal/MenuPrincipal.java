@@ -18,12 +18,15 @@ class MenuPrincipal {
     public MenuPrincipal() {
 
         GameImage botaoStart = new GameImage("botao.png");
+        botaoStart.x = 50;
         botaoStart.y = 88.5;
 
         GameImage botaoOptions = new GameImage("botao.png");
+        botaoOptions.x = 50;
         botaoOptions.y = botaoStart.y + botaoStart.height + 88.5;
 
         GameImage botaoQuit = new GameImage("botao.png");
+        botaoQuit.x = 50;
         botaoQuit.y = botaoOptions.y + botaoOptions.height + 88.5;
 
         Sound intro = new Sound("intro.wav");
