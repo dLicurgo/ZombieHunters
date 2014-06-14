@@ -271,4 +271,8 @@ public class Sprite extends Animation
             this.gravity = gravity;
     }
 
+    public Object sorteia() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

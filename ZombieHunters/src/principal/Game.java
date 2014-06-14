@@ -36,10 +36,19 @@ class Game {
         zumbi.x = sorteiaX(zumbi.width);
         zumbi.y = sorteiaY(zumbi.height);
 
+        Sprite zumbiM = new Sprite("gengarMenor.gif");
+        zumbiM.x = sorteiaMX(zumbiM.width);
+        zumbiM.y = sorteiaMY(zumbiM.height);
+
         Animation explosao = new Animation("explosao.png", 20);
-        explosao.setTotalDuration(500);
+        explosao.setTotalDuration(800);
         explosao.setLoop(false);
         boolean acertou = false;
+
+        Animation explosaoM = new Animation("explosao.png", 20);
+        explosaoM.setTotalDuration(500);
+        explosaoM.setLoop(false);
+        boolean acertouM = false;
 
         Mouse mouse = janela.getMouse();
         Keyboard tec = janela.getKeyboard();
@@ -51,20 +60,30 @@ class Game {
 
         Time tempoTotal = new Time(0, 0, 20, 0, 0, false);
         Time tempoAtual = new Time(0, 0, 1, 0, 0, false);
+        Time tempoAtualM = new Time(0, 0, 1, 900, 700, false);
 
         int pt = 0;
+
         boolean executa = true;
         while (!tec.keyDown(Keyboard.ESCAPE_KEY) && executa) {
 
             fundo.draw();
             zumbi.draw();
+            zumbiM.draw();
 
             if (mouse.isLeftButtonPressed()) {
                 new Sound("tiro.wav").play();
+                if (mouse.isOverObject(zumbiM)) {
+                    acertouM = true;
+                    zumbiM.hide();
 
-                if (mouse.isOverObject(zumbi)) {
+                    explosaoM.x = zumbiM.x - (explosaoM.width - zumbiM.width) / 2;
+                    explosaoM.y = zumbiM.y - (explosaoM.height - zumbiM.height) / 2;
+                    pt += 5;
+                } else if (mouse.isOverObject(zumbi)) {
                     acertou = true;
                     zumbi.hide();
+
                     explosao.x = zumbi.x - (explosao.width - zumbi.width) / 2;
                     explosao.y = zumbi.y - (explosao.height - zumbi.height) / 2;
                     pt++;
@@ -73,18 +92,33 @@ class Game {
             if (acertou) {
                 explosao.draw();
                 explosao.update();
-            }
 
-            if (!explosao.isPlaying()) {
-                explosao.stop();
-                explosao.play();
-                acertou = false;
-                zumbi.unhide();
+                if (!explosao.isPlaying()) {
+                    explosao.stop();
+                    explosao.play();
+                    acertou = false;
+                    zumbi.unhide();
+                }
+            }
+            if (acertouM) {
+                explosaoM.draw();
+                explosaoM.update();
+
+                if (!explosaoM.isPlaying()) {
+                    explosaoM.stop();
+                    explosaoM.play();
+                    acertouM = false;
+                    zumbiM.unhide();
+                }
+            }
+            if (tempoAtualM.timeEnded() || acertouM) {
+                zumbiM.x = sorteiaMX(zumbiM.width);
+                zumbiM.y = sorteiaMY(zumbiM.height);
+                tempoAtualM.setSecond(1);
             }
             if (tempoAtual.timeEnded() || acertou) {
                 zumbi.x = sorteiaX(zumbi.width);
                 zumbi.y = sorteiaY(zumbi.height);
-
                 tempoAtual.setSecond(1);
             }
 
@@ -122,7 +156,7 @@ class Game {
         return pos;
     }
 
-    private int sorteiaY(int heigth) {
+    private int sorteiaY(int height) {
         int i = (int) (Math.random() * 2);
         int pos;
         switch (i) {
@@ -131,7 +165,41 @@ class Game {
                 pos = 10;
                 break;
             default:
-                pos = 600 - heigth - 10;
+                pos = 600 - height - 10;
+        }
+        return pos;
+    }
+
+    private int sorteiaMX(int width) {
+        int i = (int) (Math.random() * 4);
+        int pos;
+        switch (i) {
+
+            case 0:
+                pos = 150;
+                break;
+            case 1:
+                pos = 800 - width - 150;
+                break;
+            default:
+                pos = 800;
+        }
+        return pos;
+    }
+
+    private int sorteiaMY(int height) {
+        int i = (int) (Math.random() * 4);
+        int pos;
+        switch (i) {
+
+            case 0:
+                pos = 150;
+                break;
+            case 1:
+                pos = 600 - height - 150;
+                break;
+            default:
+                pos = 600;
         }
         return pos;
     }
@@ -171,7 +239,7 @@ class Game {
                     destino.format("%d\n", pontos[i]);
 
                 }
-                if(!inserido){
+                if (!inserido) {
                     destino.format("%s\n%d", apelido, pt);
                 }
                 destino.close();
