@@ -6,6 +6,7 @@
 package principal;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.util.Scanner;
 import jplay.GameImage;
@@ -18,15 +19,17 @@ import jplay.Sound;
  */
 class MenuRanking {
 
-    private String[] nomes = {"", "", "", "", ""};
-    private String[] pontos = {"", "", "", "", ""};
+    Font fonte = new Font("arial",Font.TRUETYPE_FONT,24);
+    
+    private String[] nomes = {"-", "-", "-", "-", "-"};
+    private String[] pontos = {"-", "-", "-", "-", "-"};
 
     private int total;
 
     public MenuRanking() {
 
         try {
-            Scanner origem = new Scanner(new File("lista.txt"));
+            Scanner origem = new Scanner(new File("docs\\lista.txt"));
             total = Integer.parseInt(origem.nextLine());
             for (int i = 0; i < total; i++) {
 
@@ -42,13 +45,19 @@ class MenuRanking {
             System.out.println("Erro");
         }
 
-        Menu mr = new Menu(800, 600, "menu.jpg");
-
-        GameImage botaoExit = new GameImage("botao.png");
-        botaoExit.x = 50;
+        Menu mr = new Menu(800, 600, "images\\fundo.png");
+        
+        int margem = 20;
+        
+        GameImage titulo = new GameImage("images\\ranking-title.png");
+        titulo.y = 40;
+        titulo.x = margem;
+        
+        GameImage botaoExit = new GameImage("images\\voltar.png");
         botaoExit.y = 600 - botaoExit.height - 88.5;
+        botaoExit.x = margem;
 
-        Sound intro = new Sound("suspense5.wav");
+        Sound intro = new Sound("sounds\\suspense5.wav");
         intro.setRepeat(true);
         intro.setVolume(1);
         intro.play();
@@ -56,6 +65,7 @@ class MenuRanking {
         while (true) {
 
             mr.fundo.draw();
+            titulo.draw();
             botaoExit.draw();
 
             mostraRanking(mr, nomes, pontos);
@@ -78,36 +88,19 @@ class MenuRanking {
 
         String linhas = "---------------------------------------------------------------";
 
-        mr.janela.drawText(linhas, 50, 50, Color.yellow);
-        mr.janela.drawText("|Jogador", 50, 60, Color.yellow);
-        mr.janela.drawText("|Pontos", 175, 60, Color.yellow);
-        mr.janela.drawText("|", 300, 60, Color.yellow);
-        mr.janela.drawText(linhas, 50, 70, Color.yellow);
-
-        mr.janela.drawText("|" + nomes[0], 50, 80, Color.yellow);
-        mr.janela.drawText("|" + pontos[0], 175, 80, Color.yellow);
-        mr.janela.drawText("|", 300, 80, Color.yellow);
-        mr.janela.drawText(linhas, 50, 90, Color.yellow);
-
-        mr.janela.drawText("|" + nomes[1], 50, 100, Color.yellow);
-        mr.janela.drawText("|" + pontos[1], 175, 100, Color.yellow);
-        mr.janela.drawText("|", 300, 100, Color.yellow);
-        mr.janela.drawText(linhas, 50, 110, Color.yellow);
-
-        mr.janela.drawText("|" + nomes[2], 50, 120, Color.yellow);
-        mr.janela.drawText("|" + pontos[2], 175, 120, Color.yellow);
-        mr.janela.drawText("|", 300, 120, Color.yellow);
-        mr.janela.drawText(linhas, 50, 130, Color.yellow);
-
-        mr.janela.drawText("|" + nomes[3], 50, 140, Color.yellow);
-        mr.janela.drawText("|" + pontos[3], 175, 140, Color.yellow);
-        mr.janela.drawText("|", 300, 140, Color.yellow);
-        mr.janela.drawText(linhas, 50, 150, Color.yellow);
-
-        mr.janela.drawText("|" + nomes[4], 50, 160, Color.yellow);
-        mr.janela.drawText("|" + pontos[4], 175, 160, Color.yellow);
-        mr.janela.drawText("|", 300, 160, Color.yellow);
-        mr.janela.drawText(linhas, 50, 170, Color.yellow);
+        mr.janela.drawText("JOGADOR", 200, 200, Color.BLACK, fonte);
+                mr.janela.drawText(nomes[0], 200, 240, Color.BLACK, fonte);
+                mr.janela.drawText(nomes[1], 200, 270, Color.BLACK, fonte);
+                mr.janela.drawText(nomes[2], 200, 300, Color.BLACK, fonte);
+                mr.janela.drawText(nomes[3], 200, 330, Color.BLACK, fonte);
+                mr.janela.drawText(nomes[4], 200, 360, Color.BLACK, fonte);
+                
+                mr.janela.drawText("PONTUAÇÃO  ", 350, 200, Color.BLACK, fonte);
+                mr.janela.drawText("       " + pontos[0] + "                  ", 350, 240, Color.BLACK, fonte);
+                mr.janela.drawText("       " + pontos[1] + "                  ", 350, 270, Color.BLACK, fonte);
+                mr.janela.drawText("       " + pontos[2] + "                  ", 350, 300, Color.BLACK, fonte);
+                mr.janela.drawText("       " + pontos[3] + "                  ", 350, 330, Color.BLACK, fonte);
+                mr.janela.drawText("       " + pontos[4] + "                  ", 350, 360, Color.BLACK, fonte);
 
     }
 }

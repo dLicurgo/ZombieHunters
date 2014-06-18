@@ -1,0 +1,39 @@
+﻿Classe Start
+Classe Game
+- reorganização dos arquivos
+- Mudança da posição superior de 10 para 40 (por causa do fundo para textos)
+- adição do fundo para itens de GUI
+- mostragem de pontos na tela
+- mostragem de tempo na tela
+Classe Menu
+Classe MenuPrincipal
+- reorganização dos arquivos
+- adição do botão instructions
+- modificação do botão options para botão ranking
+- adição de margem
+- Adição do título de página
+- adição da área de créditos
+Classe MenuRanking
+- reorganização de arquivos
+- adição do título de tela
+- movimento da tabela para um ponto mais próximo do centro
+Classe MenuInstrucoes
+- adição do botão exit
+- adição do título
+- adição da imagem de instruções
+- reorganização dos arquivos
+Classe Ranking
+
+
+Possíveis Refatorações
+Classe MenuRanking
+- os jogadores podem ficar guardados em um array, e os pontos em outro
+- as dezenas de "drawText"s poderiam estar em um loop (poderia tornar o ranking escalonável, até)
+- Implementar a fonte de desenho para o ranking (e tirar as barreiras de limite...)
+
+Possíveis Modificações
+Classe MenuPrincipal
+- colocar sprite no mouse
+Classe Game
+- Pedir apelido antes do jogo, e mostrá-lo em cima da tela
+

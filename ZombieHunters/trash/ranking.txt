@@ -1,0 +1,10 @@
+Dalton
+100
+Joao
+200
+Maria
+300
+Jose
+10
+Fulano
+100

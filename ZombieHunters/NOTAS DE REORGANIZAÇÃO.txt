@@ -1,0 +1,6 @@
+PASTAS
+trash -> arquivos que depois de pesquisar, não vi uso em nenhuma parte do código
+docs -> arquivos de texto (.txt)
+images -> arquivos de images (.jpg, .png)
+sounds -> arquivos de som (.wav, .mp3)
+anims -> animações (.png)
