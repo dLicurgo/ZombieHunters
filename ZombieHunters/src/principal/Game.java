@@ -5,13 +5,18 @@
  */
 package principal;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.io.File;
 import java.util.Formatter;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
-import jplay.*;
+import jplay.Animation;
+import jplay.GameImage;
+import jplay.Keyboard;
+import jplay.Mouse;
+import jplay.Sound;
+import jplay.Sprite;
+import jplay.Time;
+import jplay.Window;
 
 /**
  *
@@ -19,80 +24,66 @@ import jplay.*;
  */
 class Game {
 
-    Window janela = new Window(800, 600);
-    Font fonte = new Font("arial", Font.TRUETYPE_FONT, 24);
-
-    GameImage fundogui = new GameImage("images\\fundogui.png");
-    GameImage fundo = new GameImage("images\\fundo.jpg");
-
-    Sprite zumbi = new Sprite("images\\gengar.gif");
-    Sprite zumbiM = new Sprite("images\\gengarMenor.gif");
-
-    Animation explosao = new Animation("anims\\explosao.png", 20);
-    Animation explosaoM = explosao;
-
-    Mouse mouse = janela.getMouse();
-    Keyboard tec = janela.getKeyboard();
-
-    Time tempoTotal = new Time(0, 0, 20, 0, 0, false);
-    Time tempoAtual = new Time(0, 0, 1, 0, 0, false);
-    Time tempoAtualM = new Time(0, 0, 1, 900, 700, false);
-
-    Sound intro = new Sound("sounds\\suspense3.wav");
-
-    int pt = 0;
-    String apelido = "";
-
     public Game() {
 
-        do {
-            apelido += JOptionPane.showInputDialog("Digite seu apelido com no máximo 12 caracteres: ");
-        } while (apelido.length() > 12);
+        Window janela = new Window(800, 600);
 
-        fundogui.width = janela.getWidth();
-
+        GameImage fundo = new GameImage("fundo.jpg");
         fundo.width = janela.getWidth();
         fundo.height = janela.getHeight();
 
+        Sprite zumbi = new Sprite("gengar.gif");
         zumbi.x = sorteiaX(zumbi.width);
         zumbi.y = sorteiaY(zumbi.height);
 
+        Sprite zumbiM = new Sprite("gengarMenor.gif");
         zumbiM.x = sorteiaMX(zumbiM.width);
         zumbiM.y = sorteiaMY(zumbiM.height);
 
+        Animation explosao = new Animation("explosao.png", 20);
         explosao.setTotalDuration(800);
         explosao.setLoop(false);
         boolean acertou = false;
 
+        Animation explosaoM = new Animation("explosao.png", 20);
         explosaoM.setTotalDuration(500);
         explosaoM.setLoop(false);
         boolean acertouM = false;
 
+        Mouse mouse = janela.getMouse();
+        Keyboard tec = janela.getKeyboard();
+
+        Sound intro = new Sound("suspense3.wav");
         intro.setRepeat(true);
         intro.setVolume(1);
         intro.play();
+
+        Time tempoTotal = new Time(0, 0, 20, 0, 0, false);
+        Time tempoAtual = new Time(0, 0, 1, 0, 0, false);
+        Time tempoAtualM = new Time(0, 0, 1, 900, 700, false);
+
+        int pt = 0;
 
         boolean executa = true;
         while (!tec.keyDown(Keyboard.ESCAPE_KEY) && executa) {
 
             fundo.draw();
-            fundogui.draw();
-            janela.drawText(apelido + " pontos: " + Integer.toString(pt), 20, 30, Color.BLACK, fonte);
-            janela.drawText("Tempo: " + tempoTotal.toString(), 600, 30, Color.BLACK, fonte);
             zumbi.draw();
             zumbiM.draw();
 
             if (mouse.isLeftButtonPressed()) {
-                new Sound("sounds\\tiro.wav").play();
+                new Sound("tiro.wav").play();
                 if (mouse.isOverObject(zumbiM)) {
                     acertouM = true;
                     zumbiM.hide();
+
                     explosaoM.x = zumbiM.x - (explosaoM.width - zumbiM.width) / 2;
                     explosaoM.y = zumbiM.y - (explosaoM.height - zumbiM.height) / 2;
                     pt += 5;
                 } else if (mouse.isOverObject(zumbi)) {
                     acertou = true;
                     zumbi.hide();
+
                     explosao.x = zumbi.x - (explosao.width - zumbi.width) / 2;
                     explosao.y = zumbi.y - (explosao.height - zumbi.height) / 2;
                     pt++;
@@ -101,6 +92,7 @@ class Game {
             if (acertou) {
                 explosao.draw();
                 explosao.update();
+
                 if (!explosao.isPlaying()) {
                     explosao.stop();
                     explosao.play();
@@ -111,6 +103,7 @@ class Game {
             if (acertouM) {
                 explosaoM.draw();
                 explosaoM.update();
+
                 if (!explosaoM.isPlaying()) {
                     explosaoM.stop();
                     explosaoM.play();
@@ -128,17 +121,25 @@ class Game {
                 zumbi.y = sorteiaY(zumbi.height);
                 tempoAtual.setSecond(1);
             }
+
             if (tempoTotal.timeEnded()) {
+                String apelido = "";
+                do {
+                    apelido += JOptionPane.showInputDialog("Digite seu apelido com no máximo 12 caracteres: ");
+                } while (apelido.length() > 12);
                 JOptionPane.showMessageDialog(null, "Você fez " + String.valueOf(pt) + " pontos!");
                 atualizaRanking(apelido, pt);
                 executa = false;
+
             }
             janela.update();
+
         }
         intro.stop();
         janela.delay(500);
         janela.setVisible(false);
         new MenuPrincipal();
+
     }
 
     private int sorteiaX(int width) {
@@ -161,7 +162,7 @@ class Game {
         switch (i) {
 
             case 0:
-                pos = (int) (fundogui.y + fundogui.height);
+                pos = 10;
                 break;
             default:
                 pos = 600 - height - 10;
@@ -205,12 +206,12 @@ class Game {
 
     private void atualizaRanking(String apelido, int pt) {
         try {
-            Scanner origem = new Scanner(new File("docs\\lista.txt"));
+            Scanner origem = new Scanner(new File("lista.txt"));
             int total = Integer.parseInt(origem.nextLine());
             if (total == 0) {
                 origem.close();
                 total++;
-                Formatter destino = new Formatter(new File("docs\\lista.txt"));
+                Formatter destino = new Formatter(new File("lista.txt"));
                 destino.format("%d\n%s\n%d", total, apelido, pt);
                 destino.close();
             } else {
@@ -221,7 +222,7 @@ class Game {
                     pontos[i] = Integer.parseInt(origem.nextLine());
                 }
                 origem.close();
-                Formatter destino = new Formatter(new File("docs\\lista.txt"));
+                Formatter destino = new Formatter(new File("lista.txt"));
                 if (total < 5) {
                     int totalAtual = total + 1;
                     destino.format("%d\n", totalAtual);
@@ -236,6 +237,7 @@ class Game {
                     }
                     destino.format("%s\n", nome[i]);
                     destino.format("%d\n", pontos[i]);
+
                 }
                 if (!inserido) {
                     destino.format("%s\n%d", apelido, pt);
@@ -246,4 +248,5 @@ class Game {
             System.out.println("Errado");
         }
     }
+
 }
