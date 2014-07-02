@@ -58,7 +58,7 @@ public class MenuPrincipal extends Menu {
 
         margem = 20;
 
-        while (!tec.keyDown(Keyboard.ESCAPE_KEY)) {
+        do {
 
             fundo.draw();
             titulo.draw();
@@ -91,15 +91,15 @@ public class MenuPrincipal extends Menu {
                     new MenuRanking();
 
                 } else if (mouse.isOverObject(botaoInstructions)) {
-                    
+
                     intro.stop();
                     new Sound("sounds\\tiro.wav").play();
                     janela.delay(100);
                     janela.setVisible(false);
                     new MenuInstructions();
-                    
+
                 } else if (mouse.isOverObject(botaoQuit)) {
-                    
+
                     intro.stop();
                     new Sound("sounds\\tiro.wav").play();
                     new Sound("sounds\\zumbi01.wav").play();
@@ -109,7 +109,8 @@ public class MenuPrincipal extends Menu {
                 }
             }
             janela.update();
-        }
+        } while (!tec.keyDown(Keyboard.ESCAPE_KEY));
+
         janela.exit();
     }
 }

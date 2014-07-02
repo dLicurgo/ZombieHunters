@@ -46,7 +46,7 @@ public class MenuInstructions extends Menu {
 
         int margem = 20;
 
-        while (!tec.keyDown(Keyboard.ESCAPE_KEY)) {
+        do {
             
             fundo.draw();
             instrutext.draw();
@@ -65,7 +65,8 @@ public class MenuInstructions extends Menu {
                 new MenuPrincipal();
             }
             janela.update();
-        }
+        } while (!tec.keyDown(Keyboard.ESCAPE_KEY));
+        
         janela.exit();
     }
 }

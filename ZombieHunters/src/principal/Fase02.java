@@ -88,7 +88,7 @@ public class Fase02 {
         mostra = true;
         avisoInserido = false;
 
-        while (!tec.keyDown(Keyboard.ESCAPE_KEY) && executa) {
+        do {
 
             fundo.draw();
             barra.draw();
@@ -158,7 +158,7 @@ public class Fase02 {
                 JOptionPane.showMessageDialog(null, "FASE 3");
                 avisoInserido = true;
             }
-        }
+        } while (!tec.keyDown(Keyboard.ESCAPE_KEY) && executa);
 
         intro.stop();
         janela.delay(500);

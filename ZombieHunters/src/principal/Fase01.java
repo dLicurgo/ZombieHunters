@@ -13,9 +13,9 @@ import jplay.*;
 
 /**
  *
- * @author Dalton
+ * @author Elena
  */
-public class Fase00 {
+public class Fase01 {
 
     private Window janela;
     private Mouse mouse;
@@ -27,11 +27,11 @@ public class Fase00 {
     private Sprite aleatorio;
     private Time tempoTotal, tempoAtual;
     private Sound intro;
-    private int pontos, maxLetras;
+    private int pontos;
     private String apelido;
     private boolean acertou, mostra, executa, avisoInserido;
 
-    public Fase00() {
+    public Fase01(String ap, int pts) {
 
         janela = new Window(800, 600);
         janela.setCursor(janela.createCustomCursor("images\\mira.png"));
@@ -46,9 +46,9 @@ public class Fase00 {
         barra = new GameImage("images\\barra.png");
         barra.width = janela.getWidth();
 
-        fundo = new GameImage("images\\fundo05.jpg");
+        fundo = new GameImage("images\\fundo06.jpg");
         fundo.width = janela.getWidth();
-        fundo.height = janela.getHeight();
+        fundo.height = janela.getHeight() + 75;
 
         explosao = new Animation("anims\\sangue01.png", 6);
         explosao.setTotalDuration(800);
@@ -60,60 +60,55 @@ public class Fase00 {
         spritesPol = new Sprite[5];
 
         for (int i = 0; i < spritesDr.length; i++) {
-            
             spritesDr[i] = new Sprite("images\\doutor0" + i + ".png");
             spritesEnf[i] = new Sprite("images\\enfermeira0" + i + ".png");
             spritesProf[i] = new Sprite("images\\professor0" + i + ".png");
             spritesPol[i] = new Sprite("images\\policial0" + i + ".png");
+
         }
 
-        tempoAtual = new Time(0, 0, 2, 0, 0, false);
         tempoTotal = new Time(0, 0, 59, 0, 0, false);
+        tempoAtual = new Time(0, 0, 1, 0, 0, false);
 
-        intro = new Sound("sounds\\suspense00.wav");
+        intro = new Sound("sounds\\suspense03.wav");
         intro.setRepeat(true);
         intro.setVolume(1);
         intro.play();
 
-        pontos = 0;
+        pontos = pts;
+        apelido = ap;
 
-        maxLetras = 12;
-
-        apelido = "?";
-        
         executa = true;
         acertou = false;
         mostra = true;
         avisoInserido = false;
 
-        pontos = 0;
-
-        while (!tec.keyDown(Keyboard.ESCAPE_KEY) && executa) {
+        do {
 
             fundo.draw();
             barra.draw();
-            
+
             janela.drawText("Pontuação de " + apelido + ": " + Integer.toString(pontos), 20, 30, Color.RED, fonte);
             janela.drawText("Tempo: " + tempoTotal.toString(), 600, 30, Color.RED, fonte);
 
             if (mostra) {
-                
+
                 aleatorio = sorteiaEposiciona(spritesDr, spritesProf, spritesEnf, spritesPol);
                 aleatorio.unhide();
                 mostra = false;
             }
-            
+
             aleatorio.draw();
 
             Point pos = mouse.getPosition();
             janela.drawText(pos.x + "    " + pos.y, pos.x + 30, pos.y + 50, Color.WHITE, fonteMouse);
 
             if (mouse.isLeftButtonPressed()) {
-                
+
                 new Sound("sounds\\tiro.wav").play();
-                
+
                 if (mouse.isOverObject(aleatorio)) {
-                    
+
                     new Sound("sounds\\zumbi01.wav").play();
                     acertou = true;
                     explosao.x = pos.x;
@@ -122,17 +117,17 @@ public class Fase00 {
                 }
             }
             if (tempoAtual.timeEnded()) {
-                
+
                 mostra = true;
-                tempoAtual.setSecond(2);
+                tempoAtual.setSecond(1);
             }
             if (acertou) {
-                
+
                 explosao.draw();
                 explosao.update();
-                
+
                 if (!explosao.isPlaying()) {
-                    
+
                     explosao.stop();
                     explosao.play();
                     acertou = false;
@@ -146,30 +141,21 @@ public class Fase00 {
 
             janela.update();
 
-            if (h == 0 && m ==0 && s == 0) {
-                
+            if (h == 0 && m == 0 && s == 0) {
+
                 JOptionPane.showMessageDialog(null, "Você fez " + String.valueOf(pontos) + " pontos!");
                 intro.stop();
                 janela.setVisible(false);
-                new Fase01(apelido, pontos);
+                new Fase02(apelido, pontos);
             }
+
             if (!avisoInserido) {
-                
-                JOptionPane.showMessageDialog(null, "FASE 1");
+
+                JOptionPane.showMessageDialog(null, "FASE 2");
                 avisoInserido = true;
-                
-                do {
-                    
-                    apelido = JOptionPane.showInputDialog("Digite um apelido");
-                    if (apelido == null || apelido.isEmpty()) {
-                        
-                        apelido = "none";
-                    }
-                } while (apelido.length() > maxLetras);
-                
-                tempoTotal = new Time(0, 0, 59, 0, 0,false);
             }
-        }
+        } while (!tec.keyDown(Keyboard.ESCAPE_KEY) && executa);
+        
         intro.stop();
         janela.delay(500);
         janela.setVisible(false);
@@ -178,61 +164,55 @@ public class Fase00 {
 
     private static Sprite sorteiaEposiciona(Sprite[] sprtsDr, Sprite[] sprtsProf, Sprite[] sprtsEnf, Sprite[] sprtsPol) {
 
-        for (int i = 0; i < sprtsDr.length; i++) {
-            
+        for (int i = 0; i < sprtsPol.length; i++) {
+
             sprtsDr[i].hide();
             sprtsProf[i].hide();
             sprtsEnf[i].hide();
             sprtsPol[i].hide();
+
         }
-        
+
         int i = (int) (Math.random() * 5);
-        
+
         switch (i) {
+
             case 0:
-                
-                int j = (int) (Math.random() * 5);
-                
+
+                int j = (int) (Math.random() * 4);
+
                 switch (j) {
                     
                     case 0:
                         
-                        sprtsDr[0].x = -30; sprtsDr[0].y = 360;
-                        sprtsProf[0].x = -30; sprtsProf[0].y = 360;
-                        sprtsEnf[0].x = -30; sprtsEnf[0].y = 360;
-                        sprtsPol[0].x = -30; sprtsPol[0].y = 360;
+                        sprtsDr[0].x = 0; sprtsDr[0].y = 300;
+                        sprtsProf[0].x = 0; sprtsProf[0].y = 300;
+                        sprtsEnf[0].x = 0; sprtsEnf[0].y = 300;
+                        sprtsPol[0].x = 0; sprtsPol[0].y = 300;
                         break;
 
                     case 1:
                         
-                        sprtsDr[0].x = 130; sprtsDr[0].y = 360;
-                        sprtsProf[0].x = 130; sprtsProf[0].y = 360;
-                        sprtsEnf[0].x = 130; sprtsEnf[0].y = 360;
-                        sprtsPol[0].x = 130; sprtsPol[0].y = 360;
+                        sprtsDr[0].x = 200; sprtsDr[0].y = 300;
+                        sprtsProf[0].x = 200; sprtsProf[0].y = 300;
+                        sprtsEnf[0].x = 200; sprtsEnf[0].y = 300;
+                        sprtsPol[0].x = 200; sprtsPol[0].y = 300;
                         break;
 
                     case 2:
                         
-                        sprtsDr[0].x = 290; sprtsDr[0].y = 360;
-                        sprtsProf[0].x = 290; sprtsProf[0].y = 360;
-                        sprtsEnf[0].x = 290; sprtsEnf[0].y = 360;
-                        sprtsPol[0].x = 290; sprtsPol[0].y = 360;
+                        sprtsDr[0].x = 0; sprtsDr[0].y = 400;
+                        sprtsProf[0].x = 0; sprtsProf[0].y = 400;
+                        sprtsEnf[0].x = 0; sprtsEnf[0].y = 400;
+                        sprtsPol[0].x = 0; sprtsPol[0].y = 400;
                         break;
 
-                    case 3:
-                        
-                        sprtsDr[0].x = 450; sprtsDr[0].y = 360;
-                        sprtsProf[0].x = 450; sprtsProf[0].y = 360;
-                        sprtsEnf[0].x = 450; sprtsEnf[0].y = 360;
-                        sprtsPol[0].x = 450; sprtsPol[0].y = 360;
-                        break;
-                        
                     default:
                         
-                        sprtsDr[0].x = 610; sprtsDr[0].y = 360;
-                        sprtsProf[0].x = 610; sprtsProf[0].y = 360;
-                        sprtsEnf[0].x = 610; sprtsEnf[0].y = 360;
-                        sprtsPol[0].x = 610; sprtsPol[0].y = 360;         
+                        sprtsDr[0].x = 0; sprtsDr[0].y = 600;
+                        sprtsProf[0].x = 0; sprtsProf[0].y = 600;
+                        sprtsEnf[0].x = 0; sprtsEnf[0].y = 600;
+                        sprtsPol[0].x = 0; sprtsPol[0].y = 600;
                 }
 
                 int i0 = (int) (Math.random() * 4);
@@ -251,32 +231,24 @@ public class Fase00 {
 
             case 1:
                 
-                int k = (int) (Math.random() * 3);
+                int k = (int) (Math.random() * 2);
                 
                 switch (k) {
                     
                     case 0:
                         
-                        sprtsDr[1].x = 160; sprtsDr[1].y = 380;
-                        sprtsProf[1].x = 160; sprtsProf[1].y = 380;
-                        sprtsEnf[1].x = 160; sprtsEnf[1].y = 380;
-                        sprtsPol[1].x = 160; sprtsPol[1].y = 380;
+                        sprtsDr[1].x = 400; sprtsDr[1].y = 360;
+                        sprtsProf[1].x = 400; sprtsProf[1].y = 360;
+                        sprtsEnf[1].x = 400; sprtsEnf[1].y = 360;
+                        sprtsPol[1].x = 400; sprtsPol[1].y = 360;
                         break;
-                        
-                    case 1:
-                        
-                        sprtsDr[1].x = 320; sprtsDr[1].y = 360;
-                        sprtsProf[1].x = 320; sprtsProf[1].y = 360;
-                        sprtsEnf[1].x = 320; sprtsEnf[1].y = 360;
-                        sprtsPol[1].x = 320; sprtsPol[1].y = 360;
-                        break;
-                        
+                    
                     default:
                         
-                        sprtsDr[1].x = 670; sprtsDr[1].y = 360;
-                        sprtsProf[1].x = 670; sprtsProf[1].y = 360;
-                        sprtsEnf[1].x = 670; sprtsEnf[1].y = 360;
-                        sprtsPol[1].x = 670; sprtsPol[1].y = 360;      
+                        sprtsDr[1].x = 580; sprtsDr[1].y = 360;
+                        sprtsProf[1].x = 580; sprtsProf[1].y = 360;
+                        sprtsEnf[1].x = 580; sprtsEnf[1].y = 360;
+                        sprtsPol[1].x = 580; sprtsPol[1].y = 360;      
                 }
                 
                 int i1 = (int) (Math.random() * 4);
@@ -295,10 +267,25 @@ public class Fase00 {
 
             case 2:
                 
-                sprtsDr[2].x = 200; sprtsDr[2].y = 250;
-                sprtsProf[2].x = 200; sprtsProf[2].y = 250;
-                sprtsEnf[2].x = 200; sprtsEnf[2].y = 250;
-                sprtsPol[2].x = 200; sprtsPol[2].y = 250;
+                int l = (int) (Math.random() * 2);
+                
+                switch (l) {
+                    
+                    case 0:
+                        
+                        sprtsDr[2].x = 180; sprtsDr[2].y = 350;
+                        sprtsProf[2].x = 180; sprtsProf[2].y = 350;
+                        sprtsEnf[2].x = 180; sprtsEnf[2].y = 350;
+                        sprtsPol[2].x = 180; sprtsPol[2].y = 350;
+                        break;
+                        
+                    default:
+                        
+                        sprtsDr[2].x = 580; sprtsDr[2].y = 300;
+                        sprtsProf[2].x = 580; sprtsProf[2].y = 300;
+                        sprtsEnf[2].x = 580; sprtsEnf[2].y = 300;
+                        sprtsPol[2].x = 580; sprtsPol[2].y = 300;   
+                }
                 
                 int i2 = (int) (Math.random() * 4);
                 
@@ -316,11 +303,11 @@ public class Fase00 {
 
             case 3:
                 
-                sprtsDr[3].x = 440; sprtsDr[3].y = 300;
-                sprtsProf[3].x = 440; sprtsProf[3].y = 300;
-                sprtsEnf[3].x = 440; sprtsEnf[3].y = 300;
-                sprtsPol[3].x = 440; sprtsPol[3].y = 300;                
-
+                sprtsDr[3].x = 530; sprtsDr[3].y = 300;
+                sprtsProf[3].x = 530; sprtsProf[3].y = 300;
+                sprtsEnf[3].x = 530; sprtsEnf[3].y = 300;
+                sprtsPol[3].x = 530; sprtsPol[3].y = 300;
+                
                 int i3 = (int) (Math.random() * 4);
                 
                 switch (i3) {
@@ -337,33 +324,10 @@ public class Fase00 {
             
             default:
                 
-                int l = (int) (Math.random() * 3);
-                
-                switch (l) {
-                    
-                    case 0:
-                        
-                        sprtsDr[4].x = 230; sprtsDr[4].y = 50;
-                        sprtsProf[4].x = 230; sprtsProf[4].y = 50;
-                        sprtsEnf[4].x = 230; sprtsEnf[4].y = 50;
-                        sprtsPol[4].x = 230; sprtsPol[4].y = 50;
-                        break;
-                    
-                    case 1:
-                        
-                        sprtsDr[4].x = 295; sprtsDr[4].y = 340;
-                        sprtsProf[4].x = 295; sprtsProf[4].y = 340;
-                        sprtsEnf[4].x = 295; sprtsEnf[4].y = 340;
-                        sprtsPol[4].x = 295; sprtsPol[4].y = 340;
-                        break;
-                    
-                    default:
-                        
-                        sprtsDr[4].x = 390; sprtsDr[4].y = 405;
-                        sprtsProf[4].x = 390; sprtsProf[4].y = 405;
-                        sprtsEnf[4].x = 390; sprtsEnf[4].y = 405;
-                        sprtsPol[4].x = 390; sprtsPol[4].y = 405;        
-                }
+                sprtsDr[4].x = 280; sprtsDr[4].y = 250;
+                sprtsProf[4].x = 280; sprtsProf[4].y = 250;
+                sprtsEnf[4].x = 280; sprtsEnf[4].y = 250;
+                sprtsPol[4].x = 280; sprtsPol[4].y = 250;
                 
                 int i4 = (int) (Math.random() * 4);
                 

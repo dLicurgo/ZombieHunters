@@ -67,7 +67,7 @@ public class MenuRanking extends Menu {
             System.out.println("Erro em Menu Ranking");
         }
 
-        while (!tec.keyDown(Keyboard.ESCAPE_KEY)) {
+        do {
 
             fundo.draw();
             titulo.draw();
@@ -87,7 +87,8 @@ public class MenuRanking extends Menu {
                 new MenuPrincipal();
             }
             janela.update();
-        }
+        } while (!tec.keyDown(Keyboard.ESCAPE_KEY));
+        
         janela.exit();
     }
 
